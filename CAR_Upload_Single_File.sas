@@ -40,7 +40,7 @@
 /* Upload a sepcific dataset                                                    */
 /********************************************************************************/
 
-%macro CAR_Upload_Single_File (url=, auth=, inpath=, indata=, outdata=, fileid=, vtext= , computeserver=no);
+%macro car_upload_single_file (url=, auth=, inpath=, indata=, outdata=, fileid=, vtext= , computeserver=no);
 
 /********************************************************************************************/
 /* Disable cookie caching for PROC HTTP                                                     */
@@ -88,7 +88,7 @@
          url="&url/clinicalRepository/repository/items/&fileid./content?name=&outdata&comment=&vtext"
          method="PUT"
          out=resp
-         in = MULTI FORM ( "uploadFile" = myfile2 header="Content-Type: text/plain"
+         in = MULTI FORM ( "uploadFile" = myfile2 header="Content-Type: text/plain")
          ;
          headers 
          "Authorization"="Bearer &car_token.";
@@ -108,6 +108,7 @@
          oauth_bearer=sas_services 
          verbose
          out=resp
+         in = MULTI FORM ( "uploadFile" = myfile2 header="Content-Type: text/plain")
         ;
       run;
 
