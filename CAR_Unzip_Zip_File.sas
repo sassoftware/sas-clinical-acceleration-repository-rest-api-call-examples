@@ -26,7 +26,7 @@
 /* Unzip a .zip file                                                                          */
 /**********************************************************************************************/
 
-%macro CAR_Unzip_Zip_File(inpath=, zipfile=, study_workspace=, computeserver=No);
+%macro car_unzip_zip_file(inpath=, zipfile=, study_workspace=, computeserver=No);
 
    %put *************************;
    %put &inpath./&zipfile.;
