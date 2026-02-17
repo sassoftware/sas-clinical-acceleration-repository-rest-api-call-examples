@@ -25,7 +25,7 @@
 /* SPDX-License-Identifier: Apache-2.0                                                      */
 /********************************************************************************************/
 
-%macro CAR_Read_Audit_Information (url=, auth=, outdata=);
+%macro car_read_audit_information(url=, auth=, outdata=);
 
 /********************************************************************************************/
 /* Disable cookie caching for PROC HTTP                                                     */

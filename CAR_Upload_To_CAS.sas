@@ -21,7 +21,7 @@
 /* Write Data To CAS                                                            */
 /********************************************************************************/
 
-%macro CAR_Write_To_CAS (caslib=casuser, inlib=work, indata=, outdata=, global_scope=Yes);
+%macro car_write_to_cas(caslib=casuser, inlib=work, indata=, outdata=, global_scope=Yes);
 
    proc cas; 
    /*check for session scope table*/

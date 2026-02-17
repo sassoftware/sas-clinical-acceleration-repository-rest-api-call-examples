@@ -19,7 +19,7 @@
 /* Copy from a File System to Library and vice versa                                          */
 /**********************************************************************************************/
 
-%macro CAR_Binary_File_Copy(
+%macro car_binary_file_copy(
     infile=_bcin
   , outfile=_bcout
   , returnName=_bcrc

@@ -10,22 +10,25 @@
 /* you will need to retrive the ID of this element                                          */
 /* Make sure, you have already populated the &car_itemid global macro variable              */
 /*                                                                                          */
+/*Multiple files are downloaded to a zip file                                               */
 /* Macro Parameters :                                                                       */
 /*       url           : The URL of your CAR instance                                       */                                                    
 /*       auth          : Yes / No - Is authentication needed                                */
-/*       fileid        : The ID of the target folder in the repository, where you will      */
-/*                       extract the .zip file to (previously retrieved in the &car_itemid  */
+/*       fileid        : The ID of the single element in the repository, you are            */
+/*                       edownloading (previously retrieved in the &car_itemid              */
 /*                       global macro)                                                      */
 /*                       variable)                                                          */
-/*       inpath        : The path of the file server or SAS compute location, where you     */
-/*                       want to read the .zip file from                                    */                  
-/*       indata        : The name of the .zip file, located on a SAS file server or         */
+/*      outpath        : The path of the file server or SAS compute location, where you     */
+/*                       want to write the multiple elements from Clinical Acceleration     */
+/*                      Repository to (as a .zip file)                                      */                  
+/*       zipfile       : The name of the .zip file, located on a SAS file server or         */
 /*                       a SAS compute location                                             */
 /*       computeserver : Yes / No - specifiy, if you are writing the file to a compute      */
 /*                       server or file server location                                     */
 /*                                                                                          */
 /* Returned value      :                                                                    */
-/*       The item is written to the location in the Repository                              */
+/*       Zip file from Clinical Acceleration Repository, download to your &zipfile          */
+/*       location                                                                           */
 /*                                                                                          */
 /*  YAML File            :                                                                  */
 /*     https://developer.sas.com/rest-apis/clinicalRepository/putRepositoryItemContent      */
@@ -35,10 +38,10 @@
 /********************************************************************************************/
 
 /********************************************************************************/
-/* Upload a sepcific dataset                                                    */
+/* Download multiple items from CAR                                                        */
 /********************************************************************************/
 
-%macro CAR_Upload_Multiple_Files (url=, auth=, inpath=, indata=, fileid=, computeserver=no);
+%macro car_get_multiple_files(url=, outpath=, zipfile=, fileid=, computeserver=No, auth=No);
 
 /********************************************************************************************/
 /* Disable cookie caching for PROC HTTP                                                     */
@@ -51,27 +54,27 @@
 /* REST API Call (PROC HTTP)                                                                */
 /********************************************************************************************/
 
-   filename resp temp; 
+   filename resp;
+   libname lsafJson clear;
 
    %if %upcase(&computeserver)=YES %then %do;
 
 /********************************************************************************************/
-/* Input location is on a SAS Compute Server                                                */
+/* Output location is on a SAS Compute Server                                                */
 /********************************************************************************************/
 
-   filename myfile2 "&inpath./&indata.";
+   filename myfile "&outpath./&zipfile.";
 
    %end;
    %else %do;
 
 /********************************************************************************************/
-/* Input location is on a SAS File Server                                                   */
+/* Output location is on a SAS File Server                                                   */
 /********************************************************************************************/
 
    filename myfile2 filesrvc 
-   folderpath="&inpath"
-   filename="&indata"
-   encoding="UTF-8"
+   folderpath="&outpath"
+   filename="&zipfile"
    ;
 
   %end;
@@ -102,13 +105,12 @@
 /***************************************************************************************/
 
       proc http
-         method="PUT"
-         url="&url/clinicalRepository/repository/items/&fileid./content?expand=true"
+         method="POST"
+         url="&url/clinicalRepository/repository/items/&car_item./content"
          oauth_bearer=sas_services 
          verbose
-         out=resp
-	     in = MULTI FORM ( "uploadFile" = myfile2 header="Content-Type: text/plain");
-         ;
+         out=myfile;
+	     "Content-Type"="application/json";
          debug level=3;
       run;
 
@@ -119,14 +121,17 @@
    %if ("&SYS_PROCHTTP_STATUS_CODE." eq "200") %then %do;
 
       %PUT *****************************************************;
-      %PUT * File &inpath &indata written and expanded         *;
+      %PUT * File DOWNLOADED TO &outpath &zipfile        *;
       %PUT *****************************************************;
 
+	  %put &=outpath;
    %end;
    %else %do;
       %PUT *****************************************************;
-      %PUT * Upload to Repository Failed                       *;
+      %PUT * FILE NOT DOWNLOADED                     *;
       %PUT *****************************************************;
    %end;
+
+   filename myfile clear ;
 
 %mend;

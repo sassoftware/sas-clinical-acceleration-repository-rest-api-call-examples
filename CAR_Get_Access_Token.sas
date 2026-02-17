@@ -23,7 +23,7 @@
 /* GET CAR ACCESS TOKEN                                                                */
 /***************************************************************************************/
 
-%macro CAR_Get_Access_Token (url=, usr=, pw=);
+%macro car_get_access_token(url=, usr=, pw=);
 
    %global car_token;
 

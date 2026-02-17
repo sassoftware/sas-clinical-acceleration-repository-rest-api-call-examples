@@ -41,7 +41,7 @@
 /* Download multiple items from CAR                                             */
 /********************************************************************************/
 
-%macro CAR_Get_Multiple_Files (url=, outpath=, zipfile=, fileid=, computeserver=No, auth=No);
+%macro car_get_multiple_files(url=, outpath=, zipfile=, fileid=, computeserver=No, auth=No);
 
 /********************************************************************************************/
 /* Disable cookie caching for PROC HTTP                                                     */
@@ -107,8 +107,9 @@
          url="&url/clinicalRepository/repository/items/&car_itemid/content"
          oauth_bearer=sas_services 
          verbose
-         out=myfile
-        ;
+         out=myfile;
+         headers
+         "Content-Type"="application/json";
       run;
 
    %end;
