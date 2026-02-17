@@ -35,7 +35,7 @@
 /* SPDX-License-Identifier: Apache-2.0                                                      */
 /********************************************************************************************/
 
-%macro CAR_Get_Single_File (url=, outpath=, outdata=, fileid=, computeserver=Yes, auth=No);
+%macro car_get_single_file (url=, outpath=, outdata=, fileid=, computeserver=Yes, auth=No);
 
 /********************************************************************************************/
 /* Disable cookie caching for PROC HTTP                                                     */
@@ -102,8 +102,9 @@
          url="&url/clinicalRepository/repository/items/&fileid/content"
          oauth_bearer=sas_services 
          verbose
-         out=myfile
-        ;
+         out=myfile;
+         headers
+         "Content-Type"="application/json";
       run;
 
    %end;
