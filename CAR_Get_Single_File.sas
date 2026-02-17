@@ -35,7 +35,7 @@
 /* SPDX-License-Identifier: Apache-2.0                                                      */
 /********************************************************************************************/
 
-%macro car_get_single_file (url=, outpath=, outdata=, fileid=, computeserver=Yes, auth=No);
+%macro car_get_single_file(url=, outpath=, outdata=, fileid=, computeserver=Yes, auth=No);
 
 /********************************************************************************************/
 /* Disable cookie caching for PROC HTTP                                                     */
