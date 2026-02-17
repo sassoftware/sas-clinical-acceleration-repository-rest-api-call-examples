@@ -41,7 +41,7 @@
 /* Download multiple items from CAR                                                        */
 /********************************************************************************/
 
-%macro car_get_multiple_files (url=, outpath=, zipfile=, fileid=, computeserver=No, auth=No);
+%macro car_get_multiple_files(url=, outpath=, zipfile=, fileid=, computeserver=No, auth=No);
 
 /********************************************************************************************/
 /* Disable cookie caching for PROC HTTP                                                     */
